@@ -22,11 +22,13 @@
     -ms-overflow-style: none; 
     width: -webkit-fill-available;
     height: -webkit-fill-available;
-    /* font-family: 'Gasoek One', sans-serif; */
-    background: rgba(228, 187, 106);
+    height: 100%;
+    overflow: hidden;
   }
 
   #appRoot {
+    display: flex;
+    overflow: auto;
   }
 
   ::-webkit-scrollbar {

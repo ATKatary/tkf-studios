@@ -1,20 +1,23 @@
 import * as React from "react";
 import "../assets/css/utils.css";
-import { GC, Image } from "./utils";
+
+import { GC } from "../components/utils";
+import { HOME_GC } from "./content/home";
+import { SlideShow } from "./gallery";
 
 function Home(props) {
+    const {images, ...other} = props;
+    const {IMAGES, ...HOME_GC_REST} = HOME_GC({images: images});
+
     return (
-        <Image 
-            i={0} angle="0deg" 
-            imageCluster={`home-image-cluster-0-animation height-100`}
-            style={{
-                transform: `rotate(${props.angle})`, 
-                backgroundSize: "cover",
-                backgroundPosition: "top",
-                height: "100%",
-                width: `calc(100% - ${props.navWidth}px)`
-            }}
-        />
+        <div className={`respond-section height-100 appear width-100 ${other.className}`}>
+            <SlideShow 
+                images={IMAGES} 
+                className="width-100 height-100"
+                imgStyle={{width: "100%", height: "100%"}}
+                style={{padding: "0", margin: "0", maxWidth: "100%"}}
+            />
+        </div>
     );
 }
 

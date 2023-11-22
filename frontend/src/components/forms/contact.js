@@ -1,75 +1,101 @@
-import { Button, TextField } from '@mui/material';
-import Textarea from '@mui/joy/Textarea';
-import { Container, Row, Col, Form } from 'reactstrap';
-import '../../assets/css/utils.css';
-import { useCustomState, Notification, GC } from '../utils';
+import * as React from 'react';
+import "../../assets/css/utils.css";
+import "../../assets/css/responsive.css";
 
-const MY_EMAIL = ["tkf@takeoffgg.com"];
-const FROM_EMAIL_CONFIRM = "tkfstudios@donotrespond.com"
+import { FormField } from './fields';
+import { sendMessage } from '../api/contact';
+import { GC, useCustomState } from '../utils';
+import ResponsiveContact from '../responsive/contact';
 
-function Contact(prop) {
-  const [notification, setNotification] = useCustomState({value: "", notify: false}); 
-  const [form, setForm] = useCustomState({width: "max(calc(20vw + 10px), 330px)"});
+import { Textarea } from '@mui/joy';
+import { Typography } from '@mui/material';
 
-  const sendMessage = () => {
-    const messageInput = document.getElementsByTagName("textarea")[0];
-    const emailInput = document.getElementById("email");
-    const subjectInput = document.getElementById("subject");
-    const messageParts = [emailInput, subjectInput, messageInput];
+/*** Constants ***/
+const NAME = {MESSAGE: "contact-message"}
+const ID = {EMAIL: "contact-email", SUBJECT: "contact-subject"}
 
-    for (const messagePart of messageParts) {
-      if (messagePart.value === "") {
-        console.log(`${messagePart.id} is required to send email`)
-        setNotification({value: `${messagePart.id} is required to send email`, notify: true});
-        return;
-      }
-    }
+const contact = (event, setNotification) => {
+    const email = document.getElementById(ID.EMAIL).value;
+    const subject = document.getElementById(ID.SUBJECT).value;
+    const message = document.getElementsByName(NAME.MESSAGE)[0].value; 
 
-    const message = `${messageInput.value}\n`;
-    fetch(`https://www.mit-msa.com:8443/mail/contact?name=''&email=${emailInput.value}&subject=${subjectInput.value}&message=${message}&reciepientEmails=${MY_EMAIL}&fromEmailConfirm=${FROM_EMAIL_CONFIRM}`, {
-      // mode: 'no-cors',
-      method: 'GET'
-    })
-    .then((res) => {
-      console.log(res)
-      if (res.status === 200) {
-        setNotification({value: "Message sent!", notify: true});
-      } else {
-        setNotification({value: "Message failed to deliver", notify: true});
-      }
-    })
-  }
+    if (email === "") setNotification({value: "Email required to send message", notify: true});
+    else if (subject === "") setNotification({value: "Subject required to send message", notify: true});
+    else if (message === "") setNotification({value: "Message required to send message", notify: true});
+    else sendMessage(email, subject, message, setNotification);
+    return;
+}
 
-  return (
-    <Container className="margin-bottom-20px flex column align-start" id="contact" style={{width: "90%"}}>
-      <h4 className="" style={{color: prop.color, marginTop: "1rem", marginBottom: "5px", marginLeft: "10px", width: form.width}}>Let's get in touch</h4>
-      <Row className="flex column justify-start" style={{marginLeft: "10px", width: form.width}}>
-          <TextField variant="standard" label="Email" id="email" sx={{color: prop.color, width: form.width, margin: "0 5px 5px 0", fontSize: "18px"}}/>
-          <TextField variant="standard" label="Subject" id="subject" style={{color: prop.color, width: form.width, margin: "0 5px 5px 0", fontSize: "18px"}}/>
-      </Row>
-      <Row className="flex justify-center" style={{padding: "20px"}}>
-        <Textarea
-          name="message"
-          id="emailMessage"
-          placeholder="Type message here…"
-          variant="outlined"
-          color="neutral"
-          minRows={5}
-          className="public-sans"
-          style={{width: form.width, padding: "15px", border: "1px solid", borderColor: prop.color, fontSize: "14px", borderRadius: "0"}}
+function Contact(props) {
+    const {setNotification, ...other} = props;
+    const [headers, setHeaders] = useCustomState({email: null, subject: null});
+
+    return (
+        <>
+        <ResponsiveContact 
+            title={
+                <Typography style={{color: GC.BLACK, fontSize: GC.FONT.TITLE}}>
+                    Let's get in touch 
+                </Typography>
+            }
+            style={{...GC.CONTACT.STYLE.CONTAINER}}
+            className="text-center justify-center align-center flex column width-100"
+            headerStyle={{
+                margin: "10px 0 20px 0",
+                width: "min(540px, 100%)"
+            }}
+            headerFields={
+                <>
+                <FormField 
+                    label="Email"
+                    id={ID.EMAIL}
+                    value={headers.email}
+                    style={{margin: "0 0 10px 0"}}
+                    inputStyle={{color: GC.BLACK}}
+                    labelStyle={{color: GC.BLACK}}
+                />
+                <FormField 
+                    label="Subject"
+                    id={ID.SUBJECT}
+                    value={headers.email}
+                    inputStyle={{color: GC.BLACK}}
+                    labelStyle={{color: GC.BLACK}}
+                />
+                </>
+            }
+
+            bodyStyle={{
+                margin: "0 0 20px 0", 
+                width: "min(540px, 100%)"
+            }}
+            bodyFields={
+                <Textarea
+                    minRows={5}
+                    name={NAME.MESSAGE}
+                    variant="outlined"
+                    placeholder="Type message here…"
+                    className="public-sans"
+                    style={{
+                        color: GC.BLACK,
+                        padding: "15px", 
+                        fontSize: "18px",
+                        borderRadius: "5px",
+                        border: "1px solid", 
+                        backgroundColor: GC.TRANSPARENT
+                    }}
+                />
+            }
+
+            sendBtnStyle={{
+                width: "150px", 
+                backgroundColor: GC.BAGE, 
+                borderRadius: "5px"
+            }}
+            sendStyle={{margin: "0 0 5px 0"}}
+            sendOnClick={(event) => contact(event, setNotification)}
         />
-      </Row>
-      <Button 
-        variant="contained" 
-        className="public-sans"
-        onClick={sendMessage}
-        style={{borderRadius: "0", padding: "10px", paddingLeft: "40px", paddingRight: "40px", backgroundColor: GC.BAGE, color: GC.BLACK, marginLeft: "10px"}}
-      >
-        Send
-      </Button>
-      <Notification id="signinNotification" notification={notification} setNotification={setNotification} duration={6001}/>
-    </Container>
-  )
+        </> 
+    )
 }
 
 export default Contact;

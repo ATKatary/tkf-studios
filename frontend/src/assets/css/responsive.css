@@ -1,0 +1,39 @@
+/***** Always True *****/
+@media only screen {
+}
+
+/***** > 1000px *****/
+@media only screen and (min-width: 750px) {
+    .respond-min {
+        display: none !important;
+    }
+    .respond-contact {
+        width: 100%;
+    }
+    .respond-section {
+        width: calc(100% - 277px);
+    }
+    .respond-about {
+        width: 70%
+    }
+    .photography-img {
+        height: 80%;
+        max-width: 600px;
+    }
+}
+
+/***** <= 1000px *****/
+@media only screen and (max-width: 750px) {
+    .respond-max {
+        display: none;
+    }
+    .respond-section {
+        width: 100%;
+    }
+    .respond-about {
+        width: 90%
+    }
+    .photography-img {
+        width: 285px
+    }
+}

@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import Landing from './pages/landing';
+import { GC } from './components/utils';
 
 const root = ReactDOM.createRoot(document.getElementById("appRoot"));
 

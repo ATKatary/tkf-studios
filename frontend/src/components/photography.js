@@ -1,5 +1,6 @@
 import * as React from "react";
 import "../assets/css/utils.css";
+import "../assets/css/responsive.css";
 import { GC, Image } from "./utils";
 
 import { Container, Row } from "reactstrap";
@@ -9,51 +10,22 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 function Photography(props) {
+    const {PROPS_GC, ...other} = props;
     const [open, setOpen] = React.useState(false);
-    const [selectedGroup, setSelectedGroup] = React.useState(null);
-    const [selectedKey, setSelectedKey] = React.useState(null);
+    const {IMAGES, ...PHOTOGRAPHY_GC_REST} = PROPS_GC({});
 
-    const photography = {
-        Portraits: [
-            require.context(`../assets/media/images/photography/people/group0`, true),
-            require.context(`../assets/media/images/photography/people/group1`, true),
-            require.context(`../assets/media/images/photography/people/group2`, true),
-            require.context(`../assets/media/images/photography/people/group3`, true),
-            require.context(`../assets/media/images/photography/people/group4`, true),
-            require.context(`../assets/media/images/photography/people/group5`, true)
-        ],
-        Landscapes: [
-            require.context(`../assets/media/images/photography/places/group0`, true),
-            require.context(`../assets/media/images/photography/places/group1`, true),
-            require.context(`../assets/media/images/photography/places/group2`, true),
-            require.context(`../assets/media/images/photography/places/group3`, true),
-            require.context(`../assets/media/images/photography/places/group4`, true),
-            require.context(`../assets/media/images/photography/places/group5`, true)
-        ],
-        Events: [
-            require.context(`../assets/media/images/photography/events/group0`, true),
-            require.context(`../assets/media/images/photography/events/group1`, true),
-            require.context(`../assets/media/images/photography/events/group2`, true),
-            require.context(`../assets/media/images/photography/events/group3`, true),
-            require.context(`../assets/media/images/photography/events/group4`, true),
-            require.context(`../assets/media/images/photography/events/group5`, true)
-        ],
-        Videos: [
-            require.context(`../assets/media/images/photography/videos/group0`, true),
-            require.context(`../assets/media/images/photography/videos/group1`, true),
-            require.context(`../assets/media/images/photography/videos/group2`, true),
-        ],
-    }
+    const [selectedKey, setSelectedKey] = React.useState(null);
+    const [selectedGroup, setSelectedGroup] = React.useState(null);
 
     const nextKey = () => {
         let {i, j} = {i: selectedGroup, j: selectedKey + 1};
-        console.log(photography[props.section][selectedGroup].keys().length)
-        if (j == photography[props.section][selectedGroup].keys().length) {
+        
+        if (j == IMAGES[selectedGroup].length) {
             i += 1;
             j = 0;
         }
-        if (i == photography[props.section].length) return
-        if (j == photography[props.section][i].keys().length) return
+        if (i == IMAGES.length) return
+        if (j == IMAGES[i].length) return
 
         setSelectedGroup(i);
         setSelectedKey(j);
@@ -67,55 +39,51 @@ function Photography(props) {
             j = 0;
         }
         if (i == -1) return
-        if (j == photography[props.section][i].keys().length) return
+        if (j == IMAGES[i].length) return
 
         setSelectedGroup(i);
         setSelectedKey(j);
     }
-    console.log(selectedGroup, selectedKey)
+  
     return (
         <div
-            style={{
-                width: `calc(100% - ${props.navWidth}px)`,
-                height: "100%", 
+            style={{height: "100%", 
                 backgroundColor: GC.WHITE,
-                overflow: "scroll"
+
             }}
-            className="appear"
+            className="appear scroll respond-section"
         >
-            <Container style={{padding: "40px 0px 0px 40px", marginTop: "40px", overflow: "scroll"}}>
-                {photography[props.section].map((subsection, i) => 
-                    <div id={`group${i}`} className="flex" style={{margin: `${props.section.length - 1 == i? "0" : "0 0 30px 0"}`, flexWrap: "wrap"}}>
-                        {subsection.keys().map((key, j) => {
-                            console.log(subsection(key))
-                            return (props.section === GC.PHOTOGRAPHY.VIDEOS?
-                                    <video 
-                                        controls 
-                                        muted 
-                                        autoFocus={false}
-                                        autoPlay
-                                        style={{objectFit: "cover", objectPosition: "top", width: "400px", height: "400px", margin:"5px", marginRight: "10px"}} 
-                                    >
-                                        <source src={subsection(key)} type="video/mp4"/>
-                                    </video>
-                                    :
-                                    <img 
-                                        className="appear pointer" 
-                                        src={subsection(key)} 
-                                        onClick={() => {setSelectedGroup(i); setSelectedKey(j); setOpen(true)}}
-                                        style={{objectFit: "cover", objectPosition: "top", width: "400px", height: "400px", margin:"5px", marginRight: "10px"}}
-                                    />
-                                    )
-                        }
+            <Container style={{marginTop: "40px", overflow: "scroll"}}>
+                {IMAGES.map((group, i) => 
+                    <Row key={`group-${i}`} className={`flex justify-center`} style={{margin: i + 1 === IMAGES.length? "": "0 0 50px 0"}}>
+                        {group.map((image, j) => 
+                            <img 
+                                key={`group-${i}-${j}`}
+                                className="appear pointer" 
+                                src={image.src} 
+                                onClick={() => {
+                                    setSelectedGroup(i); 
+                                    setSelectedKey(j); 
+                                    setOpen(true);
+                                }}
+                                style={{
+                                    ...GC.PHOTOGRAPHY.STYLE.IMG,
+                                    ...image.style
+                                }}
+                            />
                         )}
-                    </div>
+                    </Row>
                 )}
             </Container>
             <Modal
                 open={open}
-                onClose={() => {setOpen(false); setSelectedGroup(null); setSelectedKey(null);}}
+                onClose={() => {
+                    setOpen(false); 
+                    setSelectedGroup(null); 
+                    setSelectedKey(null);
+                }}
             >
-            <div className="flex modal align-center height-100 justify-center" style={{width: "fit-content"}}>
+            <div className="flex modal align-center justify-center" style={{width: "max-content", height: "100%"}}>
                 {(selectedGroup !== null) && (selectedKey !== null)? 
                     <>
                         <IconButton sx={{width: "50px", height: "50px"}} onClick={prevKey}>
@@ -123,9 +91,11 @@ function Photography(props) {
                         </IconButton>
 
                         <img 
-                            className="appear" 
-                            src={photography[props.section][selectedGroup](photography[props.section][selectedGroup].keys()[selectedKey])} 
-                            style={{objectFit: "cover", objectPosition: "top", height: "95%", width: "600px", margin:"5px", marginRight: "10px"}}
+                            className="appear photography-img" 
+                            src={IMAGES[selectedGroup][selectedKey].src} 
+                            style={{
+                                ...GC.PHOTOGRAPHY.STYLE.MODAL.IMG 
+                            }}
                         /> 
 
                         <IconButton sx={{width: "50px", height: "50px"}} onClick={nextKey}>
