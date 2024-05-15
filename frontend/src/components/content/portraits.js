@@ -3,7 +3,7 @@ export const PORTRAITS_GC = (props) => {
 
     const groups = []
     images.keys().map((key, i) => {
-        
+
         if (/[/]group[0-9]+[/]/g.test(key)) {
             const j = Number.parseInt(key.split("/")[1].match(/[0-9]+/g)[0]);
             const pic = {

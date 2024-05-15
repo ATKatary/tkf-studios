@@ -33,6 +33,10 @@ export const HOME_GC = (props) => {
                 src: images("./home/pic8.avif"),
                 style: {objectPosition: "top"}
             },
+            {
+                src: images("./home/pic9.avif"),
+                style: {objectPosition: "top"}
+            },
         ]
     }
 }

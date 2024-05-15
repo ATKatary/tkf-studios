@@ -87,7 +87,7 @@ export const GC = {
     DATE_FORMAT: "mm/dd/yyyy",
 
     DOMAIN: {
-        CONTACT: "https://www.mit-msa.com:8443"
+        CONTACT: "https://akatary.com/api"
     },
 
     FONT: {

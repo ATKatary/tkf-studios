@@ -1,4 +1,4 @@
-import logo from "../../assets/media/images/studios_logo.png";
+import logo from "../../assets/media/images/studios_logo_2.png";
 
 import HomeIcon from '@mui/icons-material/Home';
 import EmailIcon from '@mui/icons-material/Email';
@@ -86,7 +86,7 @@ export const NAV_GC = (props) => {
                     style: {margin: "20px 0 0 0", display: "flex", flexDirection: "column"},
                 },
                 content: {
-                    title: <img src={logo} height="85px" className="pointer align-self-center"/>
+                    title: <img src={logo} height="175px" className="pointer align-self-center"/>
                 }
             },
             {
@@ -101,7 +101,7 @@ export const NAV_GC = (props) => {
                             meta: {
                                 isIcon: true,
                                 style: {margin: "0 5px 0 5px"},
-                                href: "https://instagram.com/tkf.shots?igshid=OGQ5ZDc2ODk2ZA==", 
+                                href: "https://www.instagram.com/tkf.studios/", 
                             },
                             content: {
                                 icon: InstagramIcon,

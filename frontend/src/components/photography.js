@@ -83,7 +83,7 @@ function Photography(props) {
                     setSelectedKey(null);
                 }}
             >
-            <div className="flex modal align-center justify-center" style={{width: "max-content", height: "100%"}}>
+            <div className="flex modal align-center justify-center" style={{width: "max-content", height: "max-content"}}>
                 {(selectedGroup !== null) && (selectedKey !== null)? 
                     <>
                         <IconButton sx={{width: "50px", height: "50px"}} onClick={prevKey}>

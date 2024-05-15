@@ -3,10 +3,10 @@ export const CLIENTS_GC = (props) => {
         CLIENTS: [
             {
                 src: "./clients/clark.png",
-                height: "80px"
+                height: "90px"
             },
             {
-                src: "./clients/takeoff.png",
+                src: "./clients/north_east.jpeg",
                 height: "80px"
             },
             {
@@ -14,15 +14,19 @@ export const CLIENTS_GC = (props) => {
                 height: "80px"
             },
             {
+                src: "./clients/kull.png",
+                height: "85px"
+            },
+            {
                 src: "./clients/yale.png",
-                height: "80px"
+                height: "90px"
             },
             {
                 src: "./clients/cex.png",
-                height: "80px"
+                height: "90px"
             },
             {
-                src: "./clients/kull.png",
+                src: "./clients/takeoff.png",
                 height: "80px"
             },
             {

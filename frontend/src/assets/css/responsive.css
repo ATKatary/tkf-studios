@@ -17,7 +17,7 @@
         width: 70%
     }
     .photography-img {
-        height: 80%;
+        max-height: 600px;
         max-width: 600px;
     }
 }

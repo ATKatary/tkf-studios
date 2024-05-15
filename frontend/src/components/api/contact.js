@@ -8,7 +8,7 @@ export function sendMessage(email, subject, message, setNotification) {
         email: email,
         subject: subject,
         message: message, 
-        fromPassword: "",
+        fromEmail: GC.CONTACT.EMAIL,
         fromEmailConfirm: GC.CONTACT.EMAIL,
         reciepientEmails: [GC.CONTACT.EMAIL],
     }
